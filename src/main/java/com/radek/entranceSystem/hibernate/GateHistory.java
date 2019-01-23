@@ -1,31 +1,38 @@
 package com.radek.entranceSystem.hibernate;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "gates_history")
-@Getter
+@Data
 @NoArgsConstructor
 public class GateHistory implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_GATE")
-    private Integer id;
+    @EmbeddedId
+    private GateHistoryId id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_USER", referencedColumnName = "ID_USER")
+    @MapsId("gateId")
+    private Gate gate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("userId")
     private User user;
 
     @Column(name = "OPERATION_TYPE")
-    private String operation;
+    private String operationType;
 
-    public GateHistory(User user, String operation) {
+    @Column(name = "DATETIME")
+    private LocalDateTime dateTime;
+
+    public GateHistory(Gate gate, User user) {
+        this.id = new GateHistoryId(gate.getId(), user.getId());
+        this.gate = gate;
         this.user = user;
-        this.operation = operation;
     }
 }
