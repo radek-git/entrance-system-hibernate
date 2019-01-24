@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 @Data
@@ -21,5 +22,19 @@ public class BoxHistoryId implements Serializable {
     public BoxHistoryId(Integer boxId, Integer userId) {
         this.boxId = boxId;
         this.userId = userId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BoxHistoryId that = (BoxHistoryId) o;
+        return Objects.equals(boxId, that.boxId) &&
+                Objects.equals(userId, that.userId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(boxId, userId);
     }
 }

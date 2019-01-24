@@ -1,5 +1,7 @@
 package com.radek.entranceSystem;
 
+import com.radek.entranceSystem.hibernate.Box;
+import com.radek.entranceSystem.hibernate.BoxHistory;
 import com.radek.entranceSystem.hibernate.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -41,6 +43,13 @@ public class Database {
 
         var user = session.get(User.class, 1);
         System.out.println(user.getSurname());
+
+        var box = session.get(Box.class, 1);
+        System.out.println(box.getId());
+
+        var boxHistory = new BoxHistory(box, user, "Close");
+
+        session.save(boxHistory);
 
 
 
